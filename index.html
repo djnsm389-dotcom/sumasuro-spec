@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<!-- saved from url=(0202)file:///C:/Users/matsunaga/Downloads/%E3%82%B9%E3%83%9E%E3%82%B9%E3%83%AD_%E3%82%B9%E3%83%9A%E3%83%83%E3%82%AF%E3%83%90%E3%83%A9%E3%83%B3%E3%82%B9%E8%A9%95%E4%BE%A1%E3%83%84%E3%83%BC%E3%83%AB%20(1).html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スマスロ スペックバランス評価ツール</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root {
+  --bg:       #f4f5f7;
+  --white:    #ffffff;
+  --surface:  #f9fafb;
+  --border:   #e2e5ea;
+  --border2:  #c8cdd6;
+  --text:     #1a1d23;
+  --muted:    #6b7280;
+  --light:    #9ca3af;
+
+  --tokujyo-bg:   #fff7ed;
+  --tokujyo-bdr:  #f59e0b;
+  --tokujyo-txt:  #92400e;
+  --tokujyo-acc:  #d97706;
+
+  --ryo-bg:   #f0fdf4;
+  --ryo-bdr:  #22c55e;
+  --ryo-txt:  #14532d;
+  --ryo-acc:  #16a34a;
+
+  --nami-bg:  #eff6ff;
+  --nami-bdr: #3b82f6;
+  --nami-txt: #1e3a5f;
+  --nami-acc: #2563eb;
+
+  --waru-bg:  #fff1f2;
+  --waru-bdr: #f43f5e;
+  --waru-txt: #881337;
+  --waru-acc: #e11d48;
+
+  --info-bg:  #f0f9ff;
+  --info-txt: #0369a1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+}
+
+.container { max-width: 780px; margin: 0 auto; }
+
+/* ヘッダー */
+header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+.header-badge {
+  display: inline-block;
+  background: var(--text);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-bottom: 0.7rem;
+}
+header h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.02em;
+}
+header p {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* カード */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* 入力 */
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.field select, .field input[type=number] {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.92rem;
+  padding: 0.6rem 0.85rem;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+  -moz-appearance: textfield;
+}
+.field input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+.field select:focus, .field input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+.field input[type=number] { font-family: 'JetBrains Mono', monospace; }
+
+.calc-box {
+  display: flex; align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  margin-top: 0.85rem;
+  gap: 0.75rem;
+}
+.calc-label { font-size: 0.85rem; color: var(--muted); flex: 1; }
+.calc-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.82rem;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  margin-top: 1rem;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn:hover { background: #374151; }
+.btn:active { transform: scale(0.99); }
+
+/* 結果 */
+.result-area { display: none; }
+
+/* 評価バッジ */
+.eval-banner {
+  border-radius: 10px;
+  border-left: 5px solid;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.eval-banner.tokujyo { background: var(--tokujyo-bg); border-color: var(--tokujyo-bdr); }
+.eval-banner.ryo     { background: var(--ryo-bg);     border-color: var(--ryo-bdr); }
+.eval-banner.nami    { background: var(--nami-bg);     border-color: var(--nami-bdr); }
+.eval-banner.waru    { background: var(--waru-bg);     border-color: var(--waru-bdr); }
+
+.eval-rank {
+  font-size: 2.4rem;
+  font-weight: 700;
+  min-width: 48px;
+  text-align: center;
+  line-height: 1;
+}
+.tokujyo .eval-rank { color: var(--tokujyo-acc); }
+.ryo     .eval-rank { color: var(--ryo-acc); }
+.nami    .eval-rank { color: var(--nami-acc); }
+.waru    .eval-rank { color: var(--waru-acc); }
+
+.eval-info {}
+.eval-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.tokujyo .eval-label { color: var(--tokujyo-acc); }
+.ryo     .eval-label { color: var(--ryo-acc); }
+.nami    .eval-label { color: var(--nami-acc); }
+.waru    .eval-label { color: var(--waru-acc); }
+
+.eval-reason {
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+.tokujyo .eval-reason { color: var(--tokujyo-txt); }
+.ryo     .eval-reason { color: var(--ryo-txt); }
+.nami    .eval-reason { color: var(--nami-txt); }
+.waru    .eval-reason { color: var(--waru-txt); }
+
+/* 3指標ゲージ */
+.gauges { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+.gauge {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.gauge-lbl { font-size: 0.80rem; color: var(--muted); margin-bottom: 0.45rem; font-weight: 500; }
+.gauge-val { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.45rem; }
+.gauge-val.ok   { color: #16a34a; }
+.gauge-val.warn { color: #d97706; }
+.gauge-val.bad  { color: #e11d48; }
+.gauge-val.neu  { color: #2563eb; }
+.gauge-bar { height: 10px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.gauge-fill { height: 100%; border-radius: 3px; transition: width 0.55s ease; }
+.gauge-base { font-size: 0.75rem; color: var(--light); margin-top: 0.35rem; }
+
+/* チェックリスト */
+.checks { display: flex; flex-direction: column; gap: 0.45rem; }
+.chk {
+  display: flex; align-items: flex-start; gap: 0.55rem;
+  font-size: 0.9rem; line-height: 1.55;
+  padding: 0.55rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.chk-ic {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.chk-ic.ok   { background: #dcfce7; color: #15803d; }
+.chk-ic.warn { background: #fef9c3; color: #a16207; }
+.chk-ic.bad  { background: #ffe4e6; color: #be123c; }
+.chk-ic.info { background: #dbeafe; color: #1d4ed8; }
+
+/* メーカー補正 */
+.maker-box {
+  background: var(--info-bg);
+  border: 1px solid #bae6fd;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--info-txt);
+}
+.maker-box strong { font-weight: 700; }
+
+/* 実績参考 */
+.ref-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.6rem; }
+.ref-card {
+  border-radius: 8px;
+  padding: 0.7rem 0.75rem;
+  text-align: center;
+  border: 1px solid;
+}
+.ref-card.tokujyo { background: var(--tokujyo-bg); border-color: #fcd34d; }
+.ref-card.ryo     { background: var(--ryo-bg);     border-color: #86efac; }
+.ref-card.nami    { background: var(--nami-bg);     border-color: #93c5fd; }
+.ref-card.waru    { background: var(--waru-bg);     border-color: #fda4af; }
+.ref-rank { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; }
+.tokujyo .ref-rank { color: var(--tokujyo-acc); }
+.ryo     .ref-rank { color: var(--ryo-acc); }
+.nami    .ref-rank { color: var(--nami-acc); }
+.waru    .ref-rank { color: var(--waru-acc); }
+.ref-weeks { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; color: var(--text); }
+.ref-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; }
+
+.sec-title {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.65rem;
+}
+
+.tag {
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px; margin-left: 5px;
+}
+.tag.hi    { background: #dbeafe; color: #1e40af; }
+.tag.himid { background: #dcfce7; color: #14532d; }
+.tag.mid   { background: #fef9c3; color: #713f12; }
+.tag.lite  { background: #ffe4e6; color: #9f1239; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-badge">SPEC BALANCE</div>
+  <h1>スマスロ　スペックバランス評価ツール</h1>
+  <p>157機種の実績データをもとにスペックのバランスを評価します</p>
+</header>
+
+<!-- 入力 -->
+<div class="card">
+  <div class="card-title">メーカー発表値を入力</div>
+  <div class="input-grid">
+    <div class="field">
+      <label>メーカー</label>
+      <select id="sel-maker" onchange="updateCalc()">
+        <option value="other">その他／不明</option>
+        <option value="SANKYO">SANKYO</option>
+        <option value="サミー">サミー</option>
+        <option value="オリンピア">オリンピア</option>
+        <option value="山佐">山佐</option>
+        <option value="大都技研">大都技研</option>
+        <option value="ニューギン">ニューギン</option>
+        <option value="エンターライズ">エンターライズ</option>
+        <option value="藤商事">藤商事</option>
+        <option value="ビスティ">ビスティ</option>
+        <option value="京楽">京楽</option>
+        <option value="コナミアミューズメント">コナミアミューズメント</option>
+        <option value="コナミ">コナミ</option>
+        <option value="メーシー">メーシー</option>
+        <option value="ネット">ネット</option>
+        <option value="スパイキー">スパイキー</option>
+        <option value="ジェイビー">ジェイビー</option>
+        <option value="サボハニ">サボハニ</option>
+        <option value="オーイズミ">オーイズミ</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>メーカー発表 MY</label>
+      <input type="number" id="inp-my" placeholder="例：3500" min="1000" max="8000" step="50" oninput="updateCalc()">
+    </div>
+    <div class="field">
+      <label>メーカー発表 C単価</label>
+      <input type="number" id="inp-cp" placeholder="例：3.5" min="1.0" max="8.0" step="0.1" oninput="updateCalc()">
+    </div>
+    <div class="field">
+      <label>メーカー確認 2Kオーバー率（%）</label>
+      <input type="number" id="inp-2k" placeholder="例：65" min="20" max="90" step="1">
+    </div>
+  </div>
+
+  <div class="calc-box">
+    <span class="calc-label">算出：メーカー発表 MY単価（MY ÷ C単価）</span>
+    <span class="calc-val" id="disp-mfmyu">—</span>
+    <span style="font-size:0.7rem;color:var(--light);" id="disp-type-hint"></span>
+  </div>
+
+  <button class="btn" onclick="analyze()">スペックバランスを評価する</button>
+</div>
+
+<!-- 結果エリア -->
+<div class="result-area" id="result-area">
+
+  <!-- 評価バナー -->
+  <div class="eval-banner" id="eval-banner">
+    <div class="eval-rank" id="eval-rank"></div>
+    <div class="eval-info">
+      <div class="eval-label" id="eval-label"></div>
+      <div class="eval-reason" id="eval-reason"></div>
+    </div>
+  </div>
+
+  <!-- 3指標ゲージ -->
+  <div class="gauges">
+    <div class="gauge">
+      <div class="gauge-lbl">MY（見返り）</div>
+      <div class="gauge-val neu" id="g-my">—</div>
+      <div class="gauge-bar"><div class="gauge-fill" id="gf-my" style="width:0%;background:#3b82f6;"></div></div>
+      <div class="gauge-base" id="gb-my"></div>
+    </div>
+    <div class="gauge">
+      <div class="gauge-lbl">MY単価（投資効率）</div>
+      <div class="gauge-val" id="g-myu">—</div>
+      <div class="gauge-bar"><div class="gauge-fill" id="gf-myu" style="width:0%;"></div></div>
+      <div class="gauge-base" id="gb-myu"></div>
+    </div>
+    <div class="gauge">
+      <div class="gauge-lbl">2Kオーバー率（爽快感）</div>
+      <div class="gauge-val" id="g-2k">—</div>
+      <div class="gauge-bar"><div class="gauge-fill" id="gf-2k" style="width:0%;"></div></div>
+      <div class="gauge-base" id="gb-2k"></div>
+    </div>
+  </div>
+
+  <!-- 横棒ゲージ（大型版）-->
+  <div class="card">
+    <div class="sec-title">スペックバランス図（達成度ゲージ）</div>
+    <div id="gauge-chart" style="padding: 8px 0;"></div>
+
+    <!-- 評価サンプル -->
+    <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);">
+      <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">評価条件サンプル</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;">
+        <div style="text-align:center;">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--tokujyo-acc);margin-bottom:0.5rem;">特上</div>
+          <div id="sample-tokujyo" style="width:100%;min-height:50px;"></div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;line-height:1.6;">MY単価 基準+50以上<br>2K率 OK（±2pt）</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--ryo-acc);margin-bottom:0.5rem;">良</div>
+          <div id="sample-ryo" style="width:100%;min-height:50px;"></div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;line-height:1.6;">MY単価 基準以上<br>2K率 OK（±2pt）</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--nami-acc);margin-bottom:0.5rem;">並</div>
+          <div id="sample-nami" style="width:100%;min-height:50px;"></div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;line-height:1.6;">いずれか一方クリア<br>やや不足あり</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--waru-acc);margin-bottom:0.5rem;">悪</div>
+          <div id="sample-waru" style="width:100%;min-height:50px;"></div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;line-height:1.6;">両方未達 または<br>バランス悪い例</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- メーカー補正 -->
+  <div class="card">
+    <div class="sec-title">メーカー傾向による補正（実績予測）</div>
+    <div class="maker-box" id="maker-box"></div>
+  </div>
+
+  <!-- 評価チェック -->
+  <div class="card">
+    <div class="sec-title">評価チェック詳細</div>
+    <div class="checks" id="checks"></div>
+  </div>
+
+  <!-- 過去実績参考 -->
+  <div class="card">
+    <div class="sec-title" id="ref-title">過去実績の参考値</div>
+    <div class="ref-grid">
+      <div class="ref-card tokujyo">
+        <div class="ref-rank">特上</div>
+        <div class="ref-weeks" id="ref-tokujyo-weeks">—</div>
+        <div class="ref-sub" id="ref-tokujyo-sub"></div>
+      </div>
+      <div class="ref-card ryo">
+        <div class="ref-rank">良</div>
+        <div class="ref-weeks" id="ref-ryo-weeks">—</div>
+        <div class="ref-sub" id="ref-ryo-sub"></div>
+      </div>
+      <div class="ref-card nami">
+        <div class="ref-rank">並</div>
+        <div class="ref-weeks" id="ref-nami-weeks">—</div>
+        <div class="ref-sub" id="ref-nami-sub"></div>
+      </div>
+      <div class="ref-card waru">
+        <div class="ref-rank">悪</div>
+        <div class="ref-weeks" id="ref-waru-weeks">—</div>
+        <div class="ref-sub" id="ref-waru-sub"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /result-area -->
+</div><!-- /container -->
+
+<script>
+/* ── タイプ別実績参考値 ── */
+const REF_STATS = {
+  ハイ: {
+    tokujyo: { weeks:'34.5週', sub:'10週以上率 75%　4機種', note:true },
+    ryo:     { weeks:'10.8週', sub:'10週以上率 25%　4機種', note:true },
+    nami:    { weeks:'18.8週', sub:'10週以上率 50%　14機種' },
+    waru:    { weeks:'14.1週', sub:'5週以下率 45%　20機種' },
+  },
+  ハイミドル: {
+    tokujyo: { weeks:'18.2週', sub:'10週以上率 75%　8機種' },
+    ryo:     { weeks:'14.3週', sub:'10週以上率 67%　9機種' },
+    nami:    { weeks:'9.7週',  sub:'10週以上率 39%　18機種' },
+    waru:    { weeks:'6.4週',  sub:'5週以下率 60%　15機種' },
+  },
+  ミドル: {
+    tokujyo: { weeks:'8.5週',  sub:'10週以上率 50%　2機種', note:true },
+    ryo:     { weeks:'19.2週', sub:'10週以上率 38%　13機種' },
+    nami:    { weeks:'17.4週', sub:'10週以上率 25%　8機種' },
+    waru:    { weeks:'4.0週',  sub:'5週以下率 67%　3機種' },
+  },
+  ライト: {
+    tokujyo: { weeks:'—',      sub:'該当機種なし' },
+    ryo:     { weeks:'—',      sub:'該当機種なし' },
+    nami:    { weeks:'14.8週', sub:'10週以上率 56%　16機種' },
+    waru:    { weeks:'9.4週',  sub:'10週以上率 35%　23機種' },
+  },
+};
+
+/* ── データ ── */
+const MAKER_DIFF = {
+  'SANKYO':              { hi:{avg:0.7,n:6},    himid:{avg:-10.0,n:9},  all:{avg:-10.0,n:9}  },
+  'サミー':              { himid:{avg:9.0,n:7},  mid:{avg:36.0,n:3},  lite:{avg:-58.7,n:3}, all:{avg:-0.2,n:15} },
+  'オリンピア':          { hi:{avg:-94.4,n:7},   himid:{avg:4.2,n:6},   all:{avg:-47.9,n:14} },
+  '山佐':                { himid:{avg:-10.7,n:3}, mid:{avg:-26.6,n:5},  all:{avg:-16.7,n:10} },
+  '大都技研':            { lite:{avg:-56.3,n:3},  all:{avg:-20.3,n:6}  },
+  'ニューギン':          { all:{avg:2.0,n:6}   },
+  'エンターライズ':      { himid:{avg:56.2,n:5},  all:{avg:55.0,n:6}   },
+  '藤商事':              { hi:{avg:-56.0,n:4},   all:{avg:-46.5,n:6}  },
+  'ビスティ':            { hi:{avg:-110.7,n:3},  all:{avg:-109.0,n:4} },
+  '京楽':                { himid:{avg:-106.3,n:3},all:{avg:-110.2,n:4} },
+  'コナミアミューズメント':{ lite:{avg:-78.3,n:3},  all:{avg:-77.2,n:4}  },
+  'コナミ':              { all:{avg:-13.3,n:3}  },
+  'メーシー':            { hi:{avg:-10.0,n:3},   all:{avg:-10.0,n:3}  },
+  'ネット':              { all:{avg:-67.6,n:5}  },
+  'スパイキー':          { all:{avg:-77.3,n:3}  },
+  'ジェイビー':          { all:{avg:-43.3,n:3}  },
+  'サボハニ':            { all:{avg:-31.0,n:3}  },
+  'オーイズミ':          { all:{avg:185.7,n:3}  },
+};
+
+/* タイプ別基準 */
+const TYPE_CFG = {
+  ハイ:     { myuBase:950, myuTokujyo:1000, k2Base:70,  sisKey:'hi'    },
+  ハイミドル:{ myuBase:930, myuTokujyo:980,  k2Base:60,  sisKey:'himid' },
+  ミドル:   { myuBase:900, myuTokujyo:950,  k2Base:50,  sisKey:'mid'   },
+  ライト:   { myuBase:900, myuTokujyo:950,  k2Base:null, sisKey:'lite'  },
+};
+
+/* ── 評価ロジック ──
+  特上: MY単価（予測）≥ 基準+50 かつ 2K率OK（±2pt）
+  良  : MY単価（予測）≥ 基準    かつ 2K率OK（±2pt）
+  並  : MY単価OK・2K率NG  または  MY単価NG・2K率OK（MY単価不足が基準-50以内）
+  悪  : 両方NG  または  MY単価が大幅NG（基準-50超）＋2K率OK（バランス悪い例）
+*/
+
+function classifyType(my) {
+  if (my >= 3500) return 'ハイ';
+  if (my >= 3000) return 'ハイミドル';
+  if (my >= 2700) return 'ミドル';
+  return 'ライト';
+}
+
+function clampPct(v, mn, mx) { return Math.max(0, Math.min(100, (v-mn)/(mx-mn)*100)); }
+
+function updateCalc() {
+  const my = parseFloat(document.getElementById('inp-my').value);
+  const cp = parseFloat(document.getElementById('inp-cp').value);
+  const el = document.getElementById('disp-mfmyu');
+  const th = document.getElementById('disp-type-hint');
+  if (!isNaN(my) && !isNaN(cp) && cp > 0) {
+    el.textContent = Math.round(my/cp).toLocaleString();
+    const t = classifyType(my);
+    const tmap = {ハイ:'ハイ',ハイミドル:'ハイミドル',ミドル:'ミドル',ライト:'ライト'};
+    th.textContent = '→ 仮タイプ: ' + tmap[t];
+  } else {
+    el.textContent = '—'; th.textContent = '';
+  }
+}
+
+function analyze() {
+  const maker = document.getElementById('sel-maker').value;
+  const mfMY  = parseFloat(document.getElementById('inp-my').value);
+  const mfCP  = parseFloat(document.getElementById('inp-cp').value);
+  const k2raw = parseFloat(document.getElementById('inp-2k').value);
+
+  if (isNaN(mfMY) || isNaN(mfCP) || mfCP <= 0) {
+    alert('MY と C単価を入力してください');
+    return;
+  }
+
+  const mfMyu = mfMY / mfCP;
+  const type  = classifyType(mfMY);
+  const cfg   = TYPE_CFG[type];
+  const has2k = !isNaN(k2raw);
+
+  /* メーカー補正 */
+  const md = MAKER_DIFF[maker];
+  let diff = null, diffN = null, diffSrc = '';
+  if (md) {
+    const sk = cfg.sisKey;
+    if (md[sk]) { diff=md[sk].avg; diffN=md[sk].n; diffSrc=`${maker} × ${type}（${diffN}機種）`; }
+    else if (md.all) { diff=md.all.avg; diffN=md.all.n; diffSrc=`${maker} 全体（${diffN}機種）`; }
+  }
+  const sisMyu = diff !== null ? Math.round(mfMyu + diff) : Math.round(mfMyu);
+  const evalMyu = sisMyu;
+
+  /* 判定 */
+  const myuOk      = evalMyu >= cfg.myuBase;
+  const myuTokujyo = evalMyu >= cfg.myuTokujyo;
+  const myuShortfall = cfg.myuBase - evalMyu; // マイナスならOK
+
+  const k2Ok = has2k
+    ? (cfg.k2Base === null ? true : k2raw >= cfg.k2Base - 2)
+    : null;
+
+  // バランス悪い例：MY単価が基準を50超えて下回る かつ 2K率OK
+  const badBalance = !myuOk && myuShortfall > 50 && k2Ok === true;
+
+  /* 4段階評価決定 */
+  let rank;
+  if      (myuTokujyo && k2Ok === true)                       rank = 'tokujyo';
+  else if (myuOk && k2Ok === true)                             rank = 'ryo';
+  else if (badBalance)                                         rank = 'waru';
+  else if (myuOk && (k2Ok === false || k2Ok === null))         rank = 'nami';
+  else if (!myuOk && myuShortfall <= 50 && k2Ok === true)     rank = 'nami';
+  else if (!myuOk && k2Ok === false)                           rank = 'waru';
+  else                                                          rank = 'waru';
+
+  const rankLabel = {tokujyo:'特上', ryo:'良', nami:'並', waru:'悪'};
+  const rankDesc  = {
+    tokujyo: 'MY単価・2Kオーバー率ともに基準を大幅に上回っています。スペック面のバランスは優秀です。',
+    ryo:     'MY単価・2Kオーバー率ともに基準をクリアしています。スペック面のバランスは良好です。',
+    nami:    'いずれかの指標が基準付近です。スペック面にやや不安があります。導入後の実績値を早期に確認してください。',
+    waru:    '複数の指標が基準を下回っています。スペック面のバランスに問題があります。',
+  };
+  if (badBalance) rankDesc['waru'] = '2Kオーバー率は基準をクリアしていますが、MY単価が大幅に不足しています。「C単価が高いのにMYが低く2K率が高い」バランス悪い例に該当します。';
+
+  /* ── DOM更新 ── */
+  document.getElementById('result-area').style.display = 'block';
+  document.getElementById('result-area').scrollIntoView({behavior:'smooth',block:'start'});
+
+  /* 評価バナー */
+  const banner = document.getElementById('eval-banner');
+  banner.className = 'eval-banner ' + rank;
+  document.getElementById('eval-rank').textContent   = rankLabel[rank];
+  document.getElementById('eval-label').textContent  = 'スペックバランス評価';
+  document.getElementById('eval-reason').textContent = rankDesc[rank];
+
+  /* ゲージ：MY */
+  const typeTagMap = {ハイ:'hi',ハイミドル:'himid',ミドル:'mid',ライト:'lite'};
+  document.getElementById('g-my').innerHTML =
+    mfMY.toLocaleString() + `<span class="tag ${typeTagMap[type]}">${type}</span>`;
+  document.getElementById('g-my').className = 'gauge-val neu';
+  document.getElementById('gf-my').style.width = clampPct(mfMY,1000,6000) + '%';
+  document.getElementById('gf-my').style.background = '#3b82f6';
+  document.getElementById('gb-my').textContent = `発表値基準: ハイ≥3500 / HM≥3000 / ミドル≥2700`;
+
+  /* ゲージ：MY単価 */
+  const myuCls = myuTokujyo ? 'ok' : myuOk ? 'ok' : myuShortfall <= 30 ? 'warn' : 'bad';
+  const myuColor = myuTokujyo ? '#16a34a' : myuOk ? '#22c55e' : myuShortfall <= 30 ? '#d97706' : '#e11d48';
+  document.getElementById('g-myu').textContent = evalMyu.toLocaleString() + (diff !== null ? '（予測）' : '');
+  document.getElementById('g-myu').className   = 'gauge-val ' + myuCls;
+  document.getElementById('gf-myu').style.width = clampPct(evalMyu, 700, 1200) + '%';
+  document.getElementById('gf-myu').style.background = myuColor;
+  document.getElementById('gb-myu').textContent =
+    `基準: ${cfg.myuBase}以上 ／ 特上: ${cfg.myuTokujyo}以上`;
+
+  /* ゲージ：2K率 */
+  if (has2k) {
+    const k2Cls   = k2Ok ? (k2raw >= (cfg.k2Base||0) ? 'ok' : 'warn') : 'bad';
+    const k2Color = k2Ok ? '#22c55e' : '#e11d48';
+    document.getElementById('g-2k').textContent = k2raw + '%';
+    document.getElementById('g-2k').className   = 'gauge-val ' + k2Cls;
+    document.getElementById('gf-2k').style.width = clampPct(k2raw, 20, 90) + '%';
+    document.getElementById('gf-2k').style.background = k2Color;
+    document.getElementById('gb-2k').textContent =
+      cfg.k2Base ? `基準: ${cfg.k2Base}%以上（±2pt許容）` : 'ライトは基準なし';
+  } else {
+    document.getElementById('g-2k').textContent = '未入力';
+    document.getElementById('g-2k').className   = 'gauge-val neu';
+    document.getElementById('gf-2k').style.width = '0%';
+    document.getElementById('gb-2k').textContent = cfg.k2Base ? `基準: ${cfg.k2Base}%以上` : 'ライトは基準なし';
+  }
+
+  /* メーカー補正ボックス */
+  const mb = document.getElementById('maker-box');
+  if (diff !== null) {
+    const trend =
+      diff >  30 ? '上振れ傾向（実績がメーカー発表を上回りやすい）' :
+      diff > -20 ? '発表値に近い傾向（大きな乖離は少ない）' :
+      diff > -60 ? '下振れ傾向（実績がメーカー発表をやや下回る）' :
+                   '大幅下振れ傾向（実績がメーカー発表を大きく下回ることが多い）';
+    const rel = diffN >= 6 ? '高' : diffN >= 4 ? '中' : '低（サンプル少・参考程度）';
+    mb.innerHTML =
+      `<strong>${maker}</strong>の実績傾向：${trend}<br>` +
+      `MY差平均 <strong>${diff >= 0 ? '+' : ''}${Math.round(diff)}</strong>　信頼度：${rel}（${diffSrc}）<br>` +
+      `実績 MY単価予測：<strong>${evalMyu.toLocaleString()}</strong>` +
+      `（発表MY単価 ${Math.round(mfMyu).toLocaleString()} ${diff >= 0 ? '+' : ''}${Math.round(diff)}）`;
+  } else {
+    mb.innerHTML =
+      `<strong>${maker === 'other' ? 'メーカー未選択' : maker}</strong>：実績データが3機種未満のため補正なし。<br>` +
+      `発表MY単価 <strong>${Math.round(mfMyu).toLocaleString()}</strong> をそのまま使用しています。<br>` +
+      `全体平均の傾向（MY差 平均 -23.9）も念頭に置いてください。`;
+  }
+
+  /* チェックリスト */
+  const items = [];
+
+  // MY単価
+  const myuIcon = myuTokujyo ? 'ok' : myuOk ? 'ok' : myuShortfall <= 30 ? 'warn' : 'bad';
+  items.push({
+    s: myuIcon,
+    t: diff !== null
+      ? `実績 MY単価予測 ${evalMyu.toLocaleString()}（発表 ${Math.round(mfMyu).toLocaleString()} ${diff >= 0 ? '+' : ''}${Math.round(diff)}）　→　基準${cfg.myuBase}以上 ${myuOk ? (myuTokujyo ? '✓ クリア（特上水準）' : '✓ クリア') : `△ 不足（-${Math.round(myuShortfall)}）`}`
+      : `発表MY単価 ${Math.round(mfMyu).toLocaleString()}　→　基準${cfg.myuBase}以上 ${myuOk ? (myuTokujyo ? '✓ クリア（特上水準）' : '✓ クリア') : `△ 不足（-${Math.round(myuShortfall)}）`}`
+  });
+
+  // 2K率
+  if (has2k) {
+    const margin = cfg.k2Base ? k2raw - cfg.k2Base : null;
+    items.push({
+      s: k2Ok === true ? 'ok' : 'bad',
+      t: cfg.k2Base
+        ? `2Kオーバー率 ${k2raw}%　→　基準${cfg.k2Base}%以上（±2pt許容）　${k2Ok ? '✓ クリア' : `△ 不足（${margin.toFixed(1)}pt）`}`
+        : `2Kオーバー率 ${k2raw}%　→　ライトタイプは基準なし（参考値）`
+    });
+  } else {
+    items.push({ s:'warn', t:'2Kオーバー率が未入力です。メーカーに確認後に再評価することを推奨します。' });
+  }
+
+  // バランス判定
+  if (badBalance) {
+    items.push({
+      s: 'bad',
+      t: `バランス悪い例に該当：2K率はOKですがMY単価が基準を${Math.round(myuShortfall)}下回っています。実績データではこのパターンのハイミドルは5週以下が53%と最も短命でした。`
+    });
+  } else if (myuTokujyo && k2Ok === true) {
+    items.push({ s:'ok', t:'特上水準：MY単価が基準+50以上かつ2K率もクリア。実績では平均18週超・10週以上率75%のパターンです。' });
+  } else if (myuOk && k2Ok === true) {
+    items.push({ s:'ok', t:'良水準：両指標クリア。実績では10週以上率71%。コンテンツ力と合わせて購入を検討してください。' });
+  } else if (myuOk && !k2Ok) {
+    items.push({ s:'warn', t:'MY単価はOKですが2K率が不足。「出るが爽快感に欠ける」スペック構成。実績では平均11〜15週程度。' });
+  } else if (!myuOk && k2Ok === true && myuShortfall <= 50) {
+    items.push({ s:'warn', t:'2K率はOKですがMY単価がやや不足。爽快感はあるが投資効率リスクあり。実績では平均7〜11週程度。' });
+  }
+
+  // メーカー補正警告
+  if (diff !== null && diff < -50) {
+    items.push({
+      s: 'warn',
+      t: `${diffSrc}の実績はメーカー発表MY単価より平均${Math.round(Math.abs(diff))}低い傾向があります。発表値をそのまま信頼しないよう注意してください。`
+    });
+  }
+
+  document.getElementById('checks').innerHTML = items.map(i =>
+    `<div class="chk"><span class="chk-ic ${i.s}">${{ok:'✓',warn:'△',bad:'✗',info:'i'}[i.s]}</span><span>${i.t}</span></div>`
+  ).join('');
+
+  /* 参考値をタイプに合わせて更新 */
+  const ref = REF_STATS[type];
+  document.getElementById('ref-title').textContent = `過去実績の参考値（${type}タイプ）`;
+  for (const r of ['tokujyo','ryo','nami','waru']) {
+    document.getElementById(`ref-${r}-weeks`).textContent = ref[r].weeks;
+    document.getElementById(`ref-${r}-sub`).textContent   = ref[r].sub + (ref[r].note ? '　※少数' : '');
+  }
+
+  /* ゲージ描画 */
+  drawGauge({
+    mfMY, mfMyu: Math.round(mfMyu), mfK2: has2k ? k2raw : null,
+    sisMyu: evalMyu, type, cfg, rank
+  });
+
+  /* サンプルチャート描画 */
+  drawSampleCharts(cfg);
+}
+
+function drawGauge({ mfMY, mfMyu, mfK2, sisMyu, type, cfg, rank }) {
+  const container = document.getElementById('gauge-chart');
+  if (!container) return;
+
+  const myMin = { ハイ:3500, ハイミドル:3000, ミドル:2700, ライト:1500 }[type];
+  const myMax = { ハイ:6000, ハイミドル:4500, ミドル:3500, ライト:3000 }[type];
+  const myuBase = cfg.myuBase;
+  const k2Base  = cfg.k2Base || null;
+
+  const rankColor = { tokujyo:'#d97706', ryo:'#16a34a', nami:'#2563eb', waru:'#e11d48' }[rank] || '#6b7280';
+
+  function pct(v, min, max) { return Math.max(0, Math.min(100, (v - min) / (max - min) * 100)); }
+
+  // MY単価の範囲（基準を中心に前後300）
+  const myuMin = Math.max(500, myuBase - 300);
+  const myuMax = myuBase + 400;
+  // 2K率の範囲
+  const k2Min = 20, k2Max = 90;
+  // MYの範囲
+  const myPctMF  = pct(mfMY,  myMin, myMax);
+  const myPctBase= 50;
+
+  // MY単価パーセント
+  const myuPctMF  = pct(mfMyu,  myuMin, myuMax);
+  const myuPctSis = pct(sisMyu, myuMin, myuMax);
+  const myuPctBase= pct(myuBase, myuMin, myuMax);
+  const myuPctT   = pct(myuBase + 50, myuMin, myuMax);
+
+  // 2K率パーセント
+  const k2PctMF   = k2Base ? pct(mfK2 !== null ? mfK2 : k2Base, k2Min, k2Max) : null;
+  const k2PctBase = k2Base ? pct(k2Base, k2Min, k2Max) : null;
+
+  const myuOk  = sisMyu >= myuBase;
+  const myuTop = sisMyu >= myuBase + 50;
+  const k2Ok   = k2Base ? (mfK2 !== null ? mfK2 >= k2Base - 2 : false) : true;
+
+  function barColor(ok, top) {
+    if (top) return '#d97706';
+    if (ok)  return '#16a34a';
+    return '#e11d48';
+  }
+
+  function makeBar({ label, pctValue, pctBase, pctTop, pctSis, valueLabel, sisLabel, baseLabel, topLabel, ok, top, unit, mfJudge, sisJudge }) {
+    const barCol  = barColor(ok, top);
+    const sisCol  = '#f59e0b';
+    const baseCol = '#9ca3af';
+    const sisOk   = sisJudge && sisJudge.indexOf('達成') !== -1;
+    const sisColor = sisOk ? '#16a34a' : '#e11d48';
+    return `
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+        <span style="font-size:14px;font-weight:700;color:#374151;">${label}</span>
+        <span style="font-size:11px;color:${baseCol};">基準: ${baseLabel}${unit}${topLabel ? '　特上基準: ' + topLabel + unit : ''}</span>
+      </div>
+      <div style="position:relative;height:44px;background:#f3f4f6;border-radius:8px;overflow:visible;">
+        <div style="position:absolute;left:${pctBase}%;top:0;width:${100 - pctBase}%;height:100%;background:rgba(22,163,74,0.08);border-radius:0 8px 8px 0;"></div>
+        ${pctTop ? `<div style="position:absolute;left:${pctTop}%;top:0;width:${100 - pctTop}%;height:100%;background:rgba(217,119,6,0.10);border-radius:0 8px 8px 0;"></div>` : ''}
+        <div style="position:absolute;left:0;top:6px;width:${pctValue}%;height:32px;background:${barCol};border-radius:6px;transition:width 0.6s ease;opacity:0.85;"></div>
+        ${pctSis !== null ? `<div style="position:absolute;left:0;top:14px;width:${pctSis}%;height:16px;background:${sisCol};border-radius:4px;opacity:0.6;border:1.5px dashed ${sisCol};"></div>` : ''}
+        <div style="position:absolute;left:${pctBase}%;top:-6px;width:2.5px;height:56px;background:${baseCol};z-index:2;"></div>
+        ${pctTop ? `<div style="position:absolute;left:${pctTop}%;top:-6px;width:2px;height:56px;background:rgba(217,119,6,0.6);z-index:2;border-left:2px dashed rgba(217,119,6,0.6);"></div>` : ''}
+        <div style="position:absolute;left:${Math.min(pctValue - 2, 88)}%;top:8px;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;padding:0 6px;">${valueLabel}${unit}</div>
+      </div>
+      <!-- 3要素コメント -->
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:3px;font-size:12px;background:#f9fafb;border-radius:6px;padding:8px 12px;border:1px solid #e5e7eb;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:14px;height:3px;background:${baseCol};border-radius:2px;flex-shrink:0;"></span>
+          <span style="color:${baseCol};font-weight:600;">基準値 ${baseLabel}${unit}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:14px;height:6px;background:${barCol};border-radius:2px;flex-shrink:0;opacity:0.85;"></span>
+          <span style="color:${barCol};font-weight:700;">${mfJudge || (top ? '◎ 特上基準クリア' : ok ? '✓ 基準達成' : '✗ 基準未達')}</span>
+        </div>
+        ${pctSis !== null ? `
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:14px;height:4px;background:${sisCol};border-radius:2px;flex-shrink:0;opacity:0.7;border:1px dashed ${sisCol};"></span>
+          <span style="color:${sisColor};font-weight:700;">${sisJudge || ''}</span>
+        </div>` : ''}
+      </div>
+    </div>`;
+  }
+
+  let html = `<div style="max-width:520px;margin:0 auto;padding:8px 0;">`;
+
+  // MY（見返り）
+  // ── MY スペックゾーンゲージ ──
+  const MY_FULL_MIN = 1000;
+  const MY_FULL_MAX = 7000;
+  const MY_RANGE = MY_FULL_MAX - MY_FULL_MIN;
+  // 重複なし・明確な4ゾーン
+  const specs = [
+    { name: 'ライト',     min: 1000, max: 2700, color: '#60a5fa', light: 'rgba(96,165,250,0.22)' },
+    { name: 'ミドル',     min: 2700, max: 3000, color: '#34d399', light: 'rgba(52,211,153,0.22)' },
+    { name: 'ハイミドル', min: 3000, max: 3500, color: '#fbbf24', light: 'rgba(251,191,36,0.22)' },
+    { name: 'ハイ',       min: 3500, max: 7000, color: '#f87171', light: 'rgba(248,113,113,0.22)' },
+  ];
+  function myPct(v) { return Math.max(0, Math.min(100, (v - MY_FULL_MIN) / MY_RANGE * 100)); }
+  const myDotPct = myPct(mfMY);
+  const currentSpec = type;
+  const specColors = { 'ライト':'#60a5fa', 'ミドル':'#34d399', 'ハイミドル':'#fbbf24', 'ハイ':'#f87171' };
+  const specDotColor = specColors[currentSpec] || '#6b7280';
+
+  // ゾーン背景
+  let myZoneBg = '';
+  specs.forEach(function(sp) {
+    var left = myPct(sp.min);
+    var right = myPct(sp.max);
+    myZoneBg += '<div style="position:absolute;left:' + left + '%;width:' + (right - left) + '%;top:0;height:100%;background:' + sp.light + ';border-right:1px solid ' + sp.color + '44;"></div>';
+  });
+  // ゾーンラベル
+  let myZoneLabel = '';
+  specs.forEach(function(sp) {
+    var left = myPct(sp.min);
+    var right = myPct(sp.max);
+    var mid = (left + right) / 2;
+    myZoneLabel += '<div style="position:absolute;left:' + mid + '%;transform:translateX(-50%);top:4px;font-size:10px;font-weight:700;color:' + sp.color + ';white-space:nowrap;">' + sp.name + '</div>';
+  });
+  // 境界線
+  let myZoneBorder = '';
+  specs.forEach(function(sp) {
+    var left = myPct(sp.min);
+    if (left > 0) myZoneBorder += '<div style="position:absolute;left:' + left + '%;top:0;width:1.5px;height:100%;background:' + sp.color + ';opacity:0.5;"></div>';
+  });
+  // 目盛り
+  let myScale = '';
+  [1000,2000,3000,4000,5000,6000,7000].forEach(function(v) {
+    var p = myPct(v);
+    myScale += '<div style="position:absolute;left:' + p + '%;transform:translateX(-50%);font-size:10px;color:#9ca3af;">' + v + '</div>';
+  });
+
+  html += '<div style="margin-bottom:32px;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">'
+    + '<span style="font-size:14px;font-weight:700;color:#374151;">見返り（MY）</span>'
+    + '<span style="font-size:12px;font-weight:700;color:' + specDotColor + ';background:' + specDotColor + '22;padding:2px 10px;border-radius:20px;">' + currentSpec + 'タイプ</span>'
+    + '</div>'
+    + '<div style="position:relative;height:52px;background:#f3f4f6;border-radius:10px;overflow:hidden;">'
+    + myZoneBg + myZoneLabel + myZoneBorder
+    + '<div style="position:absolute;left:' + myDotPct + '%;top:0;transform:translateX(-50%);width:4px;height:100%;background:' + specDotColor + ';z-index:3;"></div>'
+    + '<div style="position:absolute;left:' + myDotPct + '%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:' + specDotColor + ';border:3px solid #fff;z-index:4;box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>'
+    + '</div>'
+    + '<div style="position:relative;height:20px;">' + myScale + '</div>'
+    + '<div style="margin-top:2px;font-size:14px;font-weight:700;color:' + specDotColor + ';">MY ' + mfMY.toLocaleString() + '　→　' + currentSpec + 'タイプ</div>'
+    + '</div>';
+
+  // MY単価（投資効率）
+  const myuMfOk  = mfMyu >= cfg.myuBase;
+  const myuMfTop = mfMyu >= (cfg.myuBase + 50);
+  const myuMfJudge  = myuMfTop
+    ? '◎ メーカー発表値 ' + mfMyu.toLocaleString() + ' → 特上基準達成'
+    : myuMfOk
+    ? '○ メーカー発表値 ' + mfMyu.toLocaleString() + ' → 基準達成'
+    : '✕ メーカー発表値 ' + mfMyu.toLocaleString() + ' → 基準未達';
+  const myuSisJudge = (sisMyu >= cfg.myuBase + 50)
+    ? '◎ 実績予測値 ' + sisMyu.toLocaleString() + ' → 特上基準達成'
+    : (sisMyu >= cfg.myuBase)
+    ? '○ 実績予測値 ' + sisMyu.toLocaleString() + ' → 基準達成'
+    : '✕ 実績予測値 ' + sisMyu.toLocaleString() + ' → 基準未達';
+
+  html += makeBar({
+    label: '投資効率（MY単価）',
+    pctValue: myuPctMF,
+    pctBase: myuPctBase,
+    pctTop: myuPctT,
+    pctSis: myuPctSis,
+    valueLabel: mfMyu.toLocaleString(),
+    sisLabel: sisMyu.toLocaleString(),
+    baseLabel: myuBase,
+    topLabel: myuBase + 50,
+    unit: '',
+    ok: myuOk,
+    top: myuTop,
+    mfJudge: myuMfJudge,
+    sisJudge: myuSisJudge,
+  });
+
+  // 2K率（爽快感）
+  if (k2Base && mfK2 !== null) {
+    const k2MfJudge = k2Ok
+      ? '○ メーカー発表値 ' + mfK2 + '% → 基準達成'
+      : '✕ メーカー発表値 ' + mfK2 + '% → 基準未達';
+    html += makeBar({
+      label: '爽快感（2Kオーバー率）',
+      pctValue: k2PctMF,
+      pctBase: k2PctBase,
+      pctTop: null,
+      pctSis: null,
+      valueLabel: mfK2,
+      sisLabel: '',
+      baseLabel: k2Base - 2,
+      topLabel: '',
+      unit: '%',
+      ok: k2Ok,
+      top: false,
+      mfJudge: k2MfJudge,
+      sisJudge: '',
+    });
+  }
+
+  // 凡例
+  html += `
+  <div style="display:flex;gap:20px;flex-wrap:wrap;padding-top:8px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:28px;height:10px;background:#16a34a;border-radius:3px;display:inline-block;opacity:0.85;"></span>発表値（基準クリア）</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:28px;height:10px;background:#d97706;border-radius:3px;display:inline-block;opacity:0.85;"></span>発表値（特上クリア）</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:28px;height:10px;background:#e11d48;border-radius:3px;display:inline-block;opacity:0.85;"></span>発表値（未達）</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:28px;height:10px;background:#f59e0b;border-radius:3px;display:inline-block;opacity:0.6;border:1.5px dashed #f59e0b;"></span>実績予測</span>
+  </div>`;
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function drawSampleCharts(cfg) {
+  var BASE_PCT = 55;
+  var TOP_PCT  = 65;
+
+  var samples = {
+    tokujyo: { myuPct:88, k2Pct:80, myuOk:true,  myuTop:true,  k2Ok:true  },
+    ryo:     { myuPct:68, k2Pct:68, myuOk:true,  myuTop:false, k2Ok:true  },
+    nami:    { myuPct:65, k2Pct:28, myuOk:true,  myuTop:false, k2Ok:false },
+    waru:    { myuPct:28, k2Pct:65, myuOk:false, myuTop:false, k2Ok:true  },
+  };
+
+  function renderSampleGauge(id, s) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var myuColor = s.myuTop ? '#d97706' : s.myuOk ? '#16a34a' : '#e11d48';
+    var k2Color  = s.k2Ok   ? '#16a34a' : '#e11d48';
+    el.innerHTML =
+      '<div style="width:100%;">'
+      + '<div style="margin-bottom:5px;">'
+      + '<div style="font-size:9px;color:#6b7280;margin-bottom:2px;">MY単価</div>'
+      + '<div style="position:relative;height:14px;background:#f3f4f6;border-radius:4px;overflow:visible;">'
+      + '<div style="position:absolute;left:' + BASE_PCT + '%;top:0;width:' + (100 - BASE_PCT) + '%;height:100%;background:rgba(22,163,74,0.12);border-radius:0 4px 4px 0;"></div>'
+      + '<div style="position:absolute;left:' + TOP_PCT  + '%;top:0;width:' + (100 - TOP_PCT)  + '%;height:100%;background:rgba(217,119,6,0.12);border-radius:0 4px 4px 0;"></div>'
+      + '<div style="position:absolute;left:0;top:0;width:' + s.myuPct + '%;height:100%;background:' + myuColor + ';border-radius:4px;opacity:0.85;"></div>'
+      + '<div style="position:absolute;left:' + BASE_PCT + '%;top:-2px;width:2px;height:18px;background:#9ca3af;z-index:2;"></div>'
+      + '<div style="position:absolute;left:' + TOP_PCT  + '%;top:-2px;width:1.5px;height:18px;background:rgba(217,119,6,0.6);z-index:2;"></div>'
+      + '</div></div>'
+      + '<div>'
+      + '<div style="font-size:9px;color:#6b7280;margin-bottom:2px;">2Kオーバー率</div>'
+      + '<div style="position:relative;height:14px;background:#f3f4f6;border-radius:4px;overflow:visible;">'
+      + '<div style="position:absolute;left:' + BASE_PCT + '%;top:0;width:' + (100 - BASE_PCT) + '%;height:100%;background:rgba(22,163,74,0.12);border-radius:0 4px 4px 0;"></div>'
+      + '<div style="position:absolute;left:0;top:0;width:' + s.k2Pct + '%;height:100%;background:' + k2Color + ';border-radius:4px;opacity:0.85;"></div>'
+      + '<div style="position:absolute;left:' + BASE_PCT + '%;top:-2px;width:2px;height:18px;background:#9ca3af;z-index:2;"></div>'
+      + '</div></div>'
+      + '</div>';
+  }
+
+  renderSampleGauge('sample-tokujyo', samples.tokujyo);
+  renderSampleGauge('sample-ryo',     samples.ryo);
+  renderSampleGauge('sample-nami',    samples.nami);
+  renderSampleGauge('sample-waru',    samples.waru);
+}
+
+</script>
+
+
+</body></html>
