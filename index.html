@@ -515,14 +515,14 @@ header p {
       <tr><td>三洋</td><td class="diff-bigdown">-108.0</td><td>4</td><td class="diff-bigdown">大幅下振れ</td><td>低</td></tr>
       <tr><td>京楽</td><td class="diff-bigdown">-100.8</td><td>7</td><td class="diff-bigdown">大幅下振れ</td><td>中</td></tr>
       <tr><td>藤商事</td><td class="diff-down">-52.3</td><td>6</td><td class="diff-down">下振れ傾向</td><td>中</td></tr>
-      <tr><td>SANKYO</td><td class="diff-down">-50.9</td><td>15</td><td class="diff-down">下振れ傾向</td><td>高</td></tr>
+      <tr><td>SANKYO</td><td class="diff-down">-46.0</td><td>14</td><td class="diff-down">下振れ傾向</td><td>高</td></tr>
       <tr><td>コナミ</td><td class="diff-down">-43.4</td><td>8</td><td class="diff-down">下振れ傾向</td><td>中</td></tr>
       <tr><td>ネット</td><td class="diff-down">-38.4</td><td>3</td><td class="diff-down">下振れ傾向</td><td>低</td></tr>
       <tr><td>オリンピア</td><td class="diff-down">-35.4</td><td>15</td><td class="diff-down">下振れ傾向</td><td>高</td></tr>
-      <tr><td>山佐</td><td class="diff-flat">-14.4</td><td>8</td><td class="diff-flat">ほぼ一致</td><td>中</td></tr>
-      <tr><td>サミー</td><td class="diff-flat">-2.5</td><td>19</td><td class="diff-flat">ほぼ一致</td><td>高</td></tr>
+      <tr><td>山佐</td><td class="diff-flat">-10.7</td><td>7</td><td class="diff-flat">ほぼ一致</td><td>中</td></tr>
+      <tr><td>サミー</td><td class="diff-flat">-9.7</td><td>17</td><td class="diff-flat">ほぼ一致</td><td>高</td></tr>
       <tr><td>ニューギン</td><td class="diff-flat">-0.4</td><td>7</td><td class="diff-flat">ほぼ一致</td><td>中</td></tr>
-      <tr><td>ユニバーサル</td><td class="diff-flat">+1.7</td><td>11</td><td class="diff-flat">ほぼ一致</td><td>高</td></tr>
+      <tr><td>ユニバーサル</td><td class="diff-flat">+8.1</td><td>9</td><td class="diff-flat">ほぼ一致</td><td>高</td></tr>
       <tr><td>大都技研</td><td class="diff-flat">+8.8</td><td>6</td><td class="diff-flat">ほぼ一致</td><td>中</td></tr>
       <tr><td>エンターライズ</td><td class="diff-up">+36.4</td><td>5</td><td class="diff-up">上振れ傾向</td><td>中</td></tr>
       <tr><td>オーイズミ</td><td class="diff-up">+188.9</td><td>3</td><td class="diff-up">大幅上振れ</td><td>低</td></tr>
@@ -540,49 +540,50 @@ header p {
 /* ── 127機種実績データ（2026/4/27更新）── */
 const REF_STATS = {
   ハイ: {
-    tokujo: { weeks:'34.4週', sub:'10週以上率 75%・4機種', note:true },
-    ryo:    { weeks:'10.4週', sub:'10週以上率 25%・4機種', note:true },
-    nami:   { weeks:'18.4週', sub:'10週以上率 50%・14機種' },
-    waru:   { weeks:'14.1週', sub:'5週以下率 45%・20機種' },
+    tokujyo: { weeks:'39.8週', sub:'平均39.8週　14機種', note:false },
+    ryo:     { weeks:'9.5週',  sub:'平均9.5週　10機種',  note:false },
+    nami:    { weeks:'4.8週',  sub:'平均4.8週　13機種' },
+    waru:    { weeks:'—',      sub:'基準未達パターン' },
   },
   ハイミドル: {
-    tokujo: { weeks:'18.2週', sub:'10週以上率 75%・8機種' },
-    ryo:    { weeks:'14.3週', sub:'10週以上率 67%・9機種' },
-    nami:   { weeks:'9.4週',  sub:'10週以上率 39%・18機種' },
-    waru:   { weeks:'6.4週',  sub:'5週以下率 60%・15機種' },
+    tokujyo: { weeks:'24.7週', sub:'平均24.7週　12機種' },
+    ryo:     { weeks:'10.3週', sub:'平均10.3週　15機種' },
+    nami:    { weeks:'4.4週',  sub:'平均4.4週　17機種' },
+    waru:    { weeks:'—',      sub:'基準未達パターン' },
   },
   ミドル: {
-    tokujo: { weeks:'8.5週',  sub:'10週以上率 50%・2機種', note:true },
-    ryo:    { weeks:'19.2週', sub:'10週以上率 38%・13機種' },
-    nami:   { weeks:'17.4週', sub:'10週以上率 25%・8機種' },
-    waru:   { weeks:'4.0週',  sub:'5週以下率 67%・3機種' },
+    tokujyo: { weeks:'46.2週', sub:'平均46.2週　6機種' },
+    ryo:     { weeks:'8.6週',  sub:'平均8.6週　10機種' },
+    nami:    { weeks:'4.8週',  sub:'平均4.8週　8機種' },
+    waru:    { weeks:'—',      sub:'基準未達パターン' },
   },
   ライト: {
-    tokujo: { weeks:'—',      sub:'参考実績なし' },
-    ryo:    { weeks:'—',      sub:'参考実績なし' },
-    nami:   { weeks:'14.8週', sub:'10週以上率 56%・16機種' },
-    waru:   { weeks:'9.4週',  sub:'10週以上率 35%・23機種' },
+    tokujyo: { weeks:'21.0週', sub:'平均21.0週　3機種', note:true },
+    ryo:     { weeks:'11.0週', sub:'平均11.0週　15機種' },
+    nami:    { weeks:'4.3週',  sub:'平均4.3週　6機種' },
+    waru:    { weeks:'—',      sub:'基準未達パターン' },
   },
 };
 
 /* ── メーカー別MY差データ ── */
 const MAKER_DIFF = {
-  'SANKYO':    { hi:{avg:0.7,n:6},    himid:{avg:-10.0,n:9},  all:{avg:-10.0,n:9}  },
-  'サミー':    { himid:{avg:9.0,n:7}, mid:{avg:36.0,n:3},  lite:{avg:-58.7,n:3}, all:{avg:-2.5,n:19} },
-  'オリンピア':{ hi:{avg:-94.4,n:7},  himid:{avg:4.2,n:6}, all:{avg:-35.4,n:15} },
-  '山佐':      { himid:{avg:-10.7,n:3},mid:{avg:-26.6,n:5},all:{avg:-14.4,n:8}  },
-  '大都技研':  { lite:{avg:-56.3,n:3},all:{avg:8.8,n:6}   },
-  'ニューギン': { all:{avg:-0.4,n:7}  },
-  'エンターライズ':{ himid:{avg:56.2,n:5},all:{avg:36.4,n:5} },
-  '藤商事':    { hi:{avg:-56.0,n:4},  all:{avg:-52.3,n:6}  },
-  '京楽':      { himid:{avg:-106.3,n:3},all:{avg:-100.8,n:7} },
-  'コナミ':    { himid:{avg:-55.0,n:4},all:{avg:-43.4,n:8}  },
-  'ネット':    { all:{avg:-38.4,n:3}  },
-  '三洋':      { all:{avg:-108.0,n:4} },
-  'ユニバーサル':{ all:{avg:1.7,n:11} },
-  'パイオニア': { all:{avg:-10.0,n:3}  },
-  'オーイズミ': { all:{avg:188.9,n:3}  },
-  'ベルコ':    { all:{avg:-83.0,n:1}  },
+  'SANKYO':      { hi:{avg:0.7,n:6},    himid:{avg:-46.0,n:14}, all:{avg:-46.0,n:14} },
+  'サミー':      { himid:{avg:9.0,n:7}, mid:{avg:36.0,n:3},  lite:{avg:-58.7,n:3}, all:{avg:-9.7,n:17} },
+  'オリンピア':  { hi:{avg:-60.0,n:7},  himid:{avg:-15.0,n:6},  all:{avg:-35.4,n:15} },
+  '山佐':        { himid:{avg:-10.7,n:3},mid:{avg:-26.6,n:5},   all:{avg:-10.7,n:7}  },
+  '大都技研':    { lite:{avg:-56.3,n:3}, all:{avg:-2.5,n:6}   },
+  'ニューギン':  { all:{avg:-0.4,n:7}   },
+  'エンターライズ':{ himid:{avg:56.2,n:3},all:{avg:+36.4,n:5}  },
+  '藤商事':      { hi:{avg:-56.0,n:4},   all:{avg:-52.3,n:6}  },
+  'ビスティ':    { hi:{avg:-110.7,n:3},  all:{avg:-109.0,n:4} },
+  '京楽':        { himid:{avg:-106.3,n:3},all:{avg:-100.8,n:7} },
+  'コナミアミューズメント': { lite:{avg:-78.3,n:3}, all:{avg:-77.2,n:4} },
+  'コナミ':      { all:{avg:-43.4,n:8}  },
+  '三洋':        { all:{avg:-108.1,n:3} },
+  'ユニバーサル':{ all:{avg:+8.1,n:9}   },
+  'オーイズミ':  { all:{avg:+188.9,n:3} },
+  'ネット':      { all:{avg:-38.4,n:3}  },
+  'パオン・ディーピー': { all:{avg:-30.0,n:3} },
 };
 
 /* ── タイプ別評価基準（127機種実績より） ──
